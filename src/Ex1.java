@@ -1,123 +1,92 @@
 import java.io.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
 
 public class Ex1 {
     private static String gameType="";
     private static String timeMode="";
     private static String openMode="";
     private static String arrSize="";
-    private static int[][] arr;
+    private static String[][] arrSrc;
+    private static String[][] arrDst;
+    private static int rows,cols;
     public static void main(String[] args) throws IOException {
         String a= "src/input2.txt";
         String b= "src/input.txt";
-        if(readFileAndIns(b)){
-            System.out.println("true");
-        }
-        else{
-            System.out.println("false");
-        }
-    }
-    public static boolean readFileAndIns(String filePath) throws IOException {
-        String c=readFile(filePath);
-        updatePar(c);
-        updateArr(c);
-        return true;
+        startGame(b);
     }
 
-    //was taken: https://stackoverflow.com/questions/326390/how-do-i-create-a-java-string-from-the-contents-of-a-file
-    public static String readFile(String file) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader (file));
-        String line;
-        StringBuilder stringBuilder = new StringBuilder();
-        String ls = System.getProperty("line.separator");
+    //taken from: https://www.w3schools.com/java/java_files_read.asp
+    public static void startGame(String args) {
+        LinkedList<String> arrStr = new LinkedList<String>();
         try {
-            while((line = reader.readLine()) != null) {
-                stringBuilder.append(line);
-                stringBuilder.append(ls);
+            File myObj = new File(args);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                arrStr.add(data);
             }
-            return stringBuilder.toString();
-        }
-        catch (FileNotFoundException e){
-            System.out.println("\n file Not found \n");
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File Not Found !.");
             e.printStackTrace();
-            return "";
         }
-        finally {
-            reader.close();
-        }
+        System.out.println(arrStr);
+        updatePar(arrStr);
+        updateArr(arrStr);
+//        outPut();
     }
-    static void updatePar(String file) {
-        int lineN=0;
-        for(int i =0 ; i<file.length();i++){
-            if(file.charAt(i)=='\n'){
-                lineN++;
-            }
-            switch (lineN) {
-                case 0:
-                    gameType += file.charAt(i);
-                    break;
-                case 1:
-                    timeMode+= file.charAt(i+1);
-                    break;
-                case 2:
-                    openMode+=file.charAt(i+1);
-                    break;
-                case 3:
-                    arrSize+=file.charAt(i+1);
-                    break;
-            }
-        }
+
+    static void updatePar(LinkedList arr) {
+        gameType=arr.get(0).toString();
+        timeMode=arr.get(1).toString();
+        openMode=arr.get(2).toString();
+        arrSize=arr.get(3).toString();
         System.out.println("gameType= "+gameType);
-        System.out.print("timeNode= "+timeMode);
-        System.out.print("openMode= "+openMode);
-        System.out.print("arrSize= "+arrSize);
+        System.out.println("timeNode= "+timeMode);
+        System.out.println("openMode= "+openMode);
+        System.out.println("arrSize= "+arrSize);
     }
-    static void updateArr(String filePath){
-        int side=0,r,c;
+    static void updateArr(LinkedList arrl){
+        boolean side=true;
         String row="",col="";
         for (int i = 0; i <arrSize.length()-1 ; i++) {
             if(arrSize.charAt(i)=='x') {
-                side = 1;
+                side = false;
                 i++;
             }
-            if(side==0)
+            if(side)
                 row+=arrSize.charAt(i);
             else
                 col+=arrSize.charAt(i);
         }
-        col = col.replace(col.substring(col.length()-1), "");
-        r= Integer.parseInt(row);
-        c=Integer.parseInt(col);
-        System.out.println("r="+r+"\nc="+c);
-        arr=new int[r][c];
-        for (int i = 0; i <r ; i++) {
-            for (int j = 0; j < c; j++) {
-                System.out.print(arr[i][j]);
-            }
-            System.out.println();
-        }
-        insertInArr(filePath);
-        System.out.println("\nprint the arr:\n");
-        for (int i = 0; i <r ; i++) {
-            for (int j = 0; j < c; j++) {
-                System.out.print(arr[i][j]);
-            }
-            System.out.println();
-        }
+        rows= Integer.parseInt(row);
+        cols=Integer.parseInt(col);
+        arrSrc =new String[rows][cols];
+        arrDst =new String[rows][cols];
+        insertInArr(arrl,true,4);
+        insertInArr(arrl,false,4+rows+1);
+        System.out.println("\nprint the arrSrc:\n");
+        System.out.println(Arrays.deepToString(arrSrc));
+        System.out.println("\nprint the arrDst:\n");
+        System.out.println(Arrays.deepToString(arrDst));
+
     }
-    static void insertInArr(String file){
-        int lineN=0;
-        System.out.println("asdsa dsadasd sa");
-        System.out.println("row="+arr.length);
-        System.out.println("col="+arr[0].length);
-        String arrStr="";
-        for(int i =0 ; i<file.length();i++){
-            if(file.charAt(i)=='\n'){
-                lineN++;
-            }
-            if(lineN>=4 && lineN<arr.length+4){
-                arrStr+=file.charAt(i);
+    static void insertInArr(LinkedList arrl,Boolean f,int point){
+        int j=0;
+        String[][] container=new String[rows][];
+        for(int i =point; i<rows+point;i++){
+            String[] temp= arrl.get(i).toString().split(",");
+            container[j++]=temp;
+        }
+        for (int i = 0; i < container.length; i++) {
+            for (int c = 0; c < container[0].length; c++) {
+                if(f)
+                    arrSrc[i][c]=container[i][c];
+                else
+                    arrDst[i][c]=container[i][c];
             }
         }
-        System.out.println(arrStr);
     }
 }
