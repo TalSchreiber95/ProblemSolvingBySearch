@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class algorithms {
 
     protected String path;
@@ -9,5 +11,12 @@ public class algorithms {
     public algorithms(Node start,Node finish) {
         this.start=start;
         this.finish=finish;
+    }
+
+    static String getState(Node state , HashMap<String, Node> closedList,int numberOfEmpty){
+        if(numberOfEmpty==1){
+            String a = null;
+        }
+        return null;
     }
 }

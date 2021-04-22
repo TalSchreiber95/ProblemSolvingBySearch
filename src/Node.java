@@ -1,11 +1,26 @@
 public class Node implements Comparable<Node>{
     private Node parent;
-    private int depth;
-    private char letter;
+    private int[][] mat;
 
-    public Node(int x, int y, Node parent,char letter) {
+    public Node(Node parent,int[][] mat) {
         this.parent = parent;
-        this.letter=letter;
+        this.mat= mat;
+    }
+
+    public void setParent(Node parent) {
+        this.parent = parent;
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public void setMat(int[][] mat) {
+        this.mat = mat;
+    }
+
+    public int[][] getMat() {
+        return mat;
     }
 
     @Override

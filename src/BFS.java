@@ -3,12 +3,13 @@ import java.util.*;
 public class BFS /* extends algorithms*/{
 
 
-    private HashMap<Integer, Node> closedList;
-    private Queue<Node> openList;
+    private HashMap<String, Node> closedList; // Explored -  the set of all nodes that have been expanded.
+    private HashMap<String, Node> openList; // Frontier - the set of all nodes available for expansion at any given point
 
 
-//    public BFS(){
-//
-//    }
-
+    public BFS(){
+        int[] arr = new int[8];
+        System.out.println(Arrays.toString(arr));
+    }
+//    String getKey
 }

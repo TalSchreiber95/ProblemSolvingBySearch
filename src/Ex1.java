@@ -19,6 +19,18 @@ public class Ex1 {
 
     //taken from: https://www.w3schools.com/java/java_files_read.asp
     public static void startGame(String args) {
+        LinkedList<String> arrStr= readFile(args);
+        System.out.println(arrStr);
+        updatePar(arrStr);
+        updateArr(arrStr);
+        if(arrStr.get(1)=="with time"){
+
+        }
+//        writeFile("f");
+//        outPut();
+    }
+    //taken from: https://www.w3schools.com/java/java_files_create.asp
+    static LinkedList readFile(String args){
         LinkedList<String> arrStr = new LinkedList<String>();
         try {
             File myObj = new File(args);
@@ -32,10 +44,20 @@ public class Ex1 {
             System.out.println("File Not Found !.");
             e.printStackTrace();
         }
-        System.out.println(arrStr);
-        updatePar(arrStr);
-        updateArr(arrStr);
-//        outPut();
+        finally {
+            return arrStr;
+        }
+    }
+    static void writeFile(String file){
+        try {
+            FileWriter myWriter = new FileWriter("filename.txt");
+            myWriter.write("Files in Java might be tricky, but it is fun enough!");
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
     static void updatePar(LinkedList arr) {
